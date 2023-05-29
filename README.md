@@ -4,7 +4,9 @@ Linuxcnc Axis/Plasmac2 based GUI, but without the plasma
 
 
 Heavily based on Plasmac2, this is an Axis GUI mod in the form of a usercommand.py file
+
 Features include
+
 - Gcode tab moved from bottom to left side tabs
 - Basic Gcode editor Tab
 - Plasmac style button add on
