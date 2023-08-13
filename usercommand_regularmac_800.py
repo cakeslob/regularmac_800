@@ -2397,15 +2397,16 @@ rC('grid','configure','.fbuttons','-sticky','nesw')
 rC('labelframe','.toolbar.feed')
 rC('label','.toolbar.feed.feedrate-upm','-anchor','e','-width','5','-fg','slategray4','-font','mono 16')
 rC('label','.toolbar.feed.feedrate-upmlab','-text','FEED','-anchor','w','-width','4','-font','mono 12')
-rC('pack','.toolbar.feed.feedrate-upmlab','-side','left','-fill','x')
-rC('pack','.toolbar.feed.feedrate-upm','-side','right','-fill','x')
-rC('pack','.toolbar.feed','-side','top','-fill','x')
+#rC('pack','.toolbar.feed.feedrate-upmlab','-side','left','-fill','x')
+#rC('pack','.toolbar.feed.feedrate-upm','-side','right','-fill','x')
+#rC('pack','.toolbar.feed','-side','top','-fill','x')
 
 rC('labelframe','.toolbar.speed')
 rC('label','.toolbar.speed.spindle-speed','-anchor','e','-width','5','-fg','slategray4','-font','mono 16')
 rC('label','.toolbar.speed.spindle-speedlab','-text','SPEED','-anchor','w','-width','6','-font','mono 12')
-rC('pack','.toolbar.speed.spindle-speedlab','-side','left','-fill','y')
+
 rC('pack','.toolbar.speed.spindle-speed','-side','right','-fill','x')
+rC('pack','.toolbar.speed.spindle-speedlab','-side','right','-fill','y')
 rC('pack','.toolbar.speed','-side','bottom','-fill','x')
 
 
