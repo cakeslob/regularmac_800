@@ -2388,6 +2388,27 @@ rC('frame','.fbuttons','-relief','flat')
 rC('grid','.fbuttons','-column',0,'-row',3,'-rowspan',2,'-sticky','nsew','-padx',0,'-pady',0)
 rC('grid','configure','.fbuttons','-sticky','nesw')
 
+#####################################
+######
+####################################
+
+###   also add spindle speed and feed to toolbar
+
+rC('labelframe','.toolbar.feed')
+rC('label','.toolbar.feed.feedrate-upm','-anchor','e','-width','5','-fg','slategray4','-font','mono 16')
+rC('label','.toolbar.feed.feedrate-upmlab','-text','FEED','-anchor','w','-width','4','-font','mono 12')
+rC('pack','.toolbar.feed.feedrate-upmlab','-side','left','-fill','x')
+rC('pack','.toolbar.feed.feedrate-upm','-side','right','-fill','x')
+rC('pack','.toolbar.feed','-side','top','-fill','x')
+
+rC('labelframe','.toolbar.speed')
+rC('label','.toolbar.speed.spindle-speed','-anchor','e','-width','5','-fg','slategray4','-font','mono 16')
+rC('label','.toolbar.speed.spindle-speedlab','-text','SPEED','-anchor','w','-width','6','-font','mono 12')
+rC('pack','.toolbar.speed.spindle-speedlab','-side','left','-fill','y')
+rC('pack','.toolbar.speed.spindle-speed','-side','right','-fill','x')
+rC('pack','.toolbar.speed','-side','bottom','-fill','x')
+
+
 
 ############################################################
 ##############   setup   #########'##############################
@@ -2513,6 +2534,19 @@ if os.path.exists(initialfile):
 ##############################################################################
 def user_hal_pins():
     # do user button setup after hal pin creation
+    comp.newpin('feedrate-upm', hal.HAL_FLOAT, hal.HAL_IN)
+    comp.newpin('spindle-speed', hal.HAL_FLOAT, hal.HAL_IN)
+    comp.ready()
+    # create new signals and connect pins
+    
+    hal.new_sig('feedrate-upm',hal.HAL_FLOAT)
+    #hal.new_sig('spindle-speed',hal.HAL_FLOAT)
+
+    hal.connect('motion.feed-upm','feedrate-upm')
+    hal.connect('axisui.feedrate-upm','feedrate-upm')
+    #hal.connect('spindle.0.speed-out','spindle-speed')
+    hal.connect('axisui.spindle-speed','spindle-vel-cmd-rpm')
+
     user_button_setup()
     color_change()
     
@@ -2534,7 +2568,9 @@ def get_button_num(name):
 rC('.pane.top.tabs','itemconfigure','edit','-state','disabled')
 
 def user_live_update():
-   
+    # spindle speed thing
+    rC('.toolbar.feed.feedrate-upm','configure','-text','%3.0f' % (comp['feedrate-upm']))
+    rC('.toolbar.speed.spindle-speed','configure','-text','%3.0f' % (comp['spindle-speed']))
    ## loaded file
     rC('.pane.top.tabs.fedit.program.name','configure','-text', os.path.basename(loaded_file))
     rC('.pane.top.tabs.fauto.program.name','configure','-text', os.path.basename(loaded_file))
