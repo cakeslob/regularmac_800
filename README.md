@@ -14,3 +14,8 @@ Features include
 - Can be configured to fit within 800 x 480 pixels and smaller with 3 different screen configurations 
 
 Still work in progress
+
+To use, put the .py into the directory of your configuration and add the following to your .ini
+[DISLAY]USER_COMMAND_FILE=usercommand_regularmac_800.py
+
+http://linuxcnc.org/docs/2.9/html/gui/axis.html#_user_command_file
