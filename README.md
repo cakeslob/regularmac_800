@@ -16,6 +16,6 @@ Features include
 Still work in progress
 
 To use, put the .py into the directory of your configuration and add the following to your .ini
-[DISLAY]USER_COMMAND_FILE=usercommand_regularmac_800.py
+[DISPLAY]USER_COMMAND_FILE=usercommand_regularmac_800.py
 
 http://linuxcnc.org/docs/2.9/html/gui/axis.html#_user_command_file
