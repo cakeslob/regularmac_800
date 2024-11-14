@@ -234,7 +234,7 @@ rC('.pane','forget','.pane.bottom')
 rC('.pane.top.tabs','insert','end','auto','-text',' Auto ','-raisecmd','auto_tab_raise','-leavecmd','auto_tab_lower')
 rC('.pane.top.tabs.fauto','configure','-borderwidth',2)
 rC('frame','.pane.top.tabs.fauto.t','-borderwidth',2,'-relief','sunken','-highlightthickness','1')
-rC('text','.pane.top.tabs.fauto.t.text','-borderwidth','0','-exportselection','0','-highlightthickness','0','-relief','flat','-takefocus','0','-undo','0','-height','30','-wrap','word')
+rC('text','.pane.top.tabs.fauto.t.text','-borderwidth','0','-exportselection','0','-highlightthickness','0','-relief','flat','-takefocus','0','-undo','0','-height','22','-wrap','word')
 rC('bind','.pane.top.tabs.fauto.t.text','<Configure>','goto_sensible_line')
 rC('scrollbar','.pane.top.tabs.fauto.t.sb','-width',25,'-borderwidth','0','-highlightthickness','0')
 rC('.pane.top.tabs.fauto.t.text','configure','-state','normal','-yscrollcommand',['.pane.top.tabs.fauto.t.sb','set'])
@@ -307,6 +307,158 @@ def select_prev_line(self):
 ############################################
 #######  end MOVE THE GCODE   ##############
 ############################################
+
+##########################################
+#####   start SEARCH BAR   ###############
+##########################################
+rC('labelframe','.pane.top.tabs.fauto.search')
+rC('pack','.pane.top.tabs.fauto.search','-side','bottom')
+
+## add search entry widget ###
+rC('entry','.pane.top.tabs.fauto.search.srch_bar','-width','14')
+
+###  add gcode scroll buttons   ####
+
+rC('button','.pane.top.tabs.fauto.search.scrl_up','-text','V','-command','select_next_line')
+rC('button','.pane.top.tabs.fauto.search.scrl_dwn','-text','^','-command','select_prev_line')
+rC('button','.pane.top.tabs.fauto.search.srch_btn','-text','search','-command','search_gcode','-relief','flat','-bg','darkgrey','-highlightbackground','black')
+rC('button','.pane.top.tabs.fauto.search.run_line','-text','RUN FROM LINE','-command','task_run_line')
+
+#    search
+rC(".pane.top.tabs.fauto.search.srch_btn","configure"
+,"-image",""
+,"-text","SEARCH"
+,"-command","search_gcode"
+,"-activebackground","lightgrey"
+,"-background","grey30"
+,"-foreground","grey90"
+,"-borderwidth","1"
+,"-font","mono 12"
+,"-height","1"
+,"-width","12"
+,"-highlightthickness", 1
+,"-highlightcolor","lightgrey"
+,"-highlightbackground","lightgrey"
+,"-relief","flat"
+);
+
+
+
+# scroll up
+rC(".pane.top.tabs.fauto.search.scrl_up","configure"
+,"-image",""
+,"-text","V"
+,'-command','select_next_line'
+,"-activebackground","lightgrey"
+,"-background","grey30"
+,"-foreground","grey90"
+,"-borderwidth","1"
+,"-font","mono 12"
+,"-height","1"
+,"-width","12"
+,"-highlightthickness", 1
+,"-highlightcolor","lightgrey"
+,"-highlightbackground","lightgrey"
+,"-relief","flat"
+,"-takefocus",0
+);
+
+# scroll down
+rC(".pane.top.tabs.fauto.search.scrl_dwn","configure"
+,"-image",""
+,"-text","^"
+,"-activebackground","lightgrey"
+,"-background","grey30"
+,"-foreground","grey90"
+,"-borderwidth","1"
+,"-font","mono 12"
+,"-height","1"
+,"-width","12"
+,"-highlightthickness", 1
+,"-highlightcolor","lightgrey"
+,"-highlightbackground","lightgrey"
+,"-relief","flat"
+);
+
+
+#  RUN FROM LINE
+rC(".pane.top.tabs.fauto.search.run_line","configure"
+,"-image",""
+,"-text","RUN FROM LINE"
+,"-activebackground","lightgrey"
+,"-background","grey30"
+,"-foreground","grey90"
+,"-borderwidth","1"
+,"-font","mono 12"
+,"-height","1"
+,"-width","12"
+,"-highlightthickness", 1
+,"-highlightcolor","lightgrey"
+,"-highlightbackground","lightgrey"
+,"-relief","flat"
+);
+
+
+
+rC('pack','.pane.top.tabs.fauto.search.srch_bar','-side','left')
+rC('pack','.pane.top.tabs.fauto.search.srch_btn','-side','left')
+#rC('pack','.pane.top.tabs.fauto.search.scrl_dwn')
+#rC('pack','.pane.top.tabs.fauto.search.scrl_up')
+rC('pack','.pane.top.tabs.fauto.search.run_line','-side','left')
+
+
+
+#####  search function  #########
+se = '.pane.top.tabs.fauto.search.srch_bar'
+      
+
+def search_next():
+      se.set()
+
+def search_gcode():  
+   
+    # remove tag 'found' from index 1 to END  
+    t.tag_remove('found', '1.0', END)  
+    s =  rC('.pane.top.tabs.fauto.search.srch_bar','get')
+    if (s):         
+        # get highlighted line from linuxcnc
+        line = o.get_highlight_line()
+        # start the search from current line +1 or you never go anywhere
+        idx = ("%d.0" % (line+1))
+        #while ("%d.0" % (line+1)):
+            # searches for desried string from index highlighted line  
+        idx = t.search(s, idx, nocase = 1,
+                            forwards = 1,
+                            stopindex = END)
+        #if not idx: break
+        # last index sum of current index and  
+        # length of text  
+        lastidx = '% s+% dc' % (idx, len(s))               
+  
+                  # overwrite 'Found' at idx  
+        t.tag_add('found', idx, lastidx)  
+        idx = lastidx 
+        t.see(idx)
+            # mark located string as yellow 
+    t.tag_config('found', background ='lightsteelblue3')
+      # split idx into something linuxcnc can use to set highlighted line
+    idxh = int(idx.split('.')[0])
+    o.set_highlight_line(idxh)
+    o.tkRedraw()
+    # clears the search bar once found 
+    rC('.pane.top.tabs.fauto.search.srch_bar','delete','0','end')
+    
+    
+TclCommands.search_gcode = search_gcode
+ 
+#############################
+#### end search stuff #########
+##############################
+
+
+##########################################
+#####   end SEARCH BAR   ###############
+##########################################
 
 #########
 #########################################################################
