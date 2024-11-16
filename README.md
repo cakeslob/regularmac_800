@@ -1,6 +1,8 @@
 # regularmac_800
-Linuxcnc Axis/Plasmac2 based GUI, but without the plasma
-<img src="/2022-10-09-215142_1024x768_scrot.png" >
+Linuxcnc Axis/Plasmac2 based GUI, but without the plasma, Testing offset table and vars table, needs help
+<img src="/20241027_22h30m51s_grim.png" >
+<img src="/20241027_22h35m50s_grim.png" >
+
 
 
 Heavily based on Plasmac2, this is an Axis GUI mod in the form of a usercommand.py file
