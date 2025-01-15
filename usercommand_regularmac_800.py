@@ -1280,6 +1280,8 @@ def font_size_changed():                            # plasmac modified
     arcFont = '{} {}'.format(fontName, str(int(fontSize) * 3))
     ngcFont = '{} {}'.format(fontName, str(int(fontSize) - 1))
     rC('font','configure','TkDefaultFont','-family', fontName, '-size', fontSize)
+    rC('font','configure','TkIconFont','-family', fontName, '-size', fontSize)
+    rC('font','configure','TkTextFont','-family', fontName, '-size', fontSize)
 #    rC(fplasma + '.arc-voltage','configure','-font',arcFont)
 #   rC('.pane.bottom.t.text','configure','-height',8,'-font',font)
     rC('.pane.top.tabs.fauto.t.text','configure','-font',ngcFont)
